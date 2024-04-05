@@ -9,6 +9,7 @@ CMPE412-PROJECT 1
 #include <algorithm>
 using namespace std;
 
+// I defined the constant variables according to Project 1: Roman Republic's Cursus Honorum requirements.
 const int total_years = 200;
 const int min_age_quaestor = 30;
 const int min_age_aedile = 36;
@@ -30,6 +31,7 @@ const int stdDev_of_influx_annually = 5;
 const int mean_of_life_expentancy = 55;
 const int stdDev_of_life_expectancy = 10;
 
+// I created a public class for politicians to get their ages. 
 class Politician {
 public:
     Politician(int age) : age(age) {}
@@ -37,8 +39,13 @@ public:
     int age;
 };
 
+/* Also, I created another class that includes the simulation of our Project 1 scenario. In that part, we have various functions such as simulateYear(), 
+PSI_finalResult(), run_function(), dist_of_age_calculation(), and etc...
+*/
+
 class romeSimulation {
 public:
+        // This is the starting point of our Rome Republic simulation. 
     romeSimulation() : psi(PSI_startpoint), year(0) {
         politicians.reserve(eachyear_quaestores + eachyear_aediles + eachyear_praetors + eachyear_consul);
         for (int i = 0; i < eachyear_quaestores; i++) {
@@ -55,6 +62,7 @@ public:
         }
     }
 
+    // In this function, I simulated the year.
     void simulateYear(std::mt19937& gen, std::normal_distribution<>& lifeExpectancyDist) {
         std::shuffle(politicians.begin(), politicians.end(), gen);
         for (auto& politician : politicians) {
@@ -73,12 +81,13 @@ public:
             psi += continuous_reelection_asConsul * (eachyear_consul - politicians_count(min_age_consul, mean_of_life_expentancy));
         }
     }
-
+    // In this function, I obtain the final result of PSI.
     int PSI_finalResult() const
     {
         return psi;
     }
 
+    // This is run the function.
     void run_function() {
         random_device rd;
         mt19937 gen(rd());
@@ -96,7 +105,7 @@ public:
         }
     }
 
-
+    // I created another function that calculates the distribution of age.
     void dist_of_age_calculation() {
         vector<int> quaestorAges;
         vector<int> aedileAges;
@@ -138,6 +147,7 @@ public:
         auto praetor_sum = calc_sum(praetorAges);
         auto consul_sum = calc_sum(consulAges);
 
+        // This is outputs part.
         cout << "Age Distribution" << std::endl;
         cout << "Quaestor: Count=" << quaest_sum.first << ", Average Age=" << quaest_sum.second << endl;
         cout << "Aedile: Count=" << aedile_sum.first << ", Average Age=" << aedile_sum.second << endl;
@@ -161,6 +171,7 @@ int main() {
     romeSimulation romeSimulation;
     romeSimulation.run_function();
 
+    // This is outputs part.
     std::cout << "End-of-romeSimulation PSI: " << romeSimulation.PSI_finalResult() << std::endl;
 
     std::cout << "Annual Fill Rate:" << std::endl;
